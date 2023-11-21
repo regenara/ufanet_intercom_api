@@ -1,0 +1,5 @@
+#python3.10
+
+aiohttp~=3.8.4
+certifi~=2022.12.7
+ujson~=5.8.0
