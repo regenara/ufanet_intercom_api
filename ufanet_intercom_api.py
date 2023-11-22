@@ -30,13 +30,12 @@ class UnknownUfanetIntercomAPIError(UfanetIntercomAPIError):
 
 
 class UfanetIntercomAPI:
-    def __init__(self, contract: str, password: str, log_level: int = logging.INFO):
+    def __init__(self, contract: str, password: str):
         self._contract = contract
         self._password = password
         self._token: str | None = None
         self._base_url: str = 'https://dom.ufanet.ru/'
         self._logger: logging = logging.getLogger('UfanetIntercomAPI')
-        self._logger.setLevel(log_level)
 
         ssl_context = ssl.create_default_context(cafile=certifi.where())
         self.session: ClientSession = ClientSession(connector=TCPConnector(ssl=ssl_context),

@@ -1,10 +1,10 @@
+import logging
 import os
 
 from aiohttp import web
 from aiohttp.web_request import Request
 
 from ufanet_intercom_api import UfanetIntercomAPI
-
 
 routes = web.RouteTableDef()
 
@@ -27,6 +27,7 @@ async def on_shutdown(_):
 
 
 app = web.Application()
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(name)s %(message)s', style='%')
 app.add_routes(routes)
 app.on_startup.append(on_startup)
 app.on_shutdown.append(on_shutdown)
