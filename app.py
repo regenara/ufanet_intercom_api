@@ -8,16 +8,26 @@ from ufanet_intercom_api import UfanetIntercomAPI
 
 routes = web.RouteTableDef()
 
+UFANET = []
+
 
 @routes.get('/intercoms/open')
 async def open_intercoms(_: Request):
-    ufanet = UfanetIntercomAPI(contract=os.getenv('CONTRACT'), password=os.getenv('PASSWORD'))
-    intercom_ids = await ufanet.get_intercoms()
-    [await ufanet.open_intercom(intercom_id) for intercom_id in intercom_ids]
-    await ufanet.session.close()
+    intercom_ids = await UFANET[0].get_intercoms()
+    [await UFANET[0].open_intercom(intercom_id) for intercom_id in intercom_ids]
     return web.json_response(data={'success': True})
+
+
+async def on_startup(_):
+    UFANET.append(UfanetIntercomAPI(contract=os.getenv('CONTRACT'), password=os.getenv('PASSWORD')))
+
+
+async def on_shutdown(_):
+    await UFANET[0].session.close()
 
 
 app = web.Application()
 app.add_routes(routes)
+app.on_startup.append(on_startup)
+app.on_shutdown.append(on_shutdown)
 web.run_app(app)
