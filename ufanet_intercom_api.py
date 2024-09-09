@@ -103,3 +103,6 @@ class UfanetIntercomAPI:
         url = urljoin(self._base_url, f'api/v0/skud/shared/{intercom_id}/open/')
         response = await self._send_request(url=url)
         return response['result']
+
+    async def open_intercoms(self):
+        [await self.open_intercom(intercom_id=intercom_id) for intercom_id in await self.get_intercoms()]

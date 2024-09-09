@@ -13,8 +13,7 @@ UFANET = []
 
 @routes.get('/intercoms/open')
 async def open_intercoms(_: Request):
-    intercom_ids = await UFANET[0].get_intercoms()
-    [await UFANET[0].open_intercom(intercom_id) for intercom_id in intercom_ids]
+    await UFANET[0].open_intercoms()
     return web.json_response(data={'success': True})
 
 
