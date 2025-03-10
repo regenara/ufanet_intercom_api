@@ -28,7 +28,7 @@ from .models import (History,
 
 
 class UfanetIntercomAPI:
-    def __init__(self, contract: str, password: str):
+    def __init__(self, contract: str, password: str, timeout: int = 30):
         self._contract = contract
         self._password = password
         self._token: Union[str, None] = None
@@ -37,7 +37,7 @@ class UfanetIntercomAPI:
 
         ssl_context = ssl.create_default_context(cafile=certifi.where())
         self.session: ClientSession = ClientSession(connector=TCPConnector(ssl=ssl_context),
-                                                    timeout=ClientTimeout(total=5))
+                                                    timeout=ClientTimeout(total=timeout))
 
     async def _send_request(self, url: str, method: str = 'GET', params: Dict[str, Any] = None,
                             json: Dict[str, Any] = None) -> Union[Dict[str, Any], List[Dict[str, Any]], None]:
