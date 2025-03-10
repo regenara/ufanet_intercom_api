@@ -1,0 +1,19 @@
+[project]
+name = "ufanet_intercom_api"
+version = "0.0.2"
+description = "API wrapper for managing the Ufanet intercom."
+authors = [
+    { name = "regenara", email = "jakebv.22@gmail.com" }
+]
+license = { file = "LICENSE" }
+dependencies = [
+    "certifi==2025.1.31",
+    "pydantic==2.10.6",
+    "aiohttp==3.10.11"
+]
+
+dynamic = ["readme"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
