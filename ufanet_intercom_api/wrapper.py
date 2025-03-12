@@ -118,3 +118,6 @@ class UfanetIntercomAPI:
         json = {'uuid': str(uuid)}
         response = await self._send_request(url=url, method='POST', json=json)
         return HistoryData(**response)
+
+    async def close(self):
+        await self.session.close()

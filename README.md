@@ -1,18 +1,17 @@
 # Ufanet Intercom API
 
-### Описание  
-Обёртка для API, предназначенная для управления домофонной системой провайдера **Уфанет**.
-
-### Description  
-A wrapper for the **Ufanet** intercom system API.
+### Описание / Description
+Обёртка API для управления домофоном провайдера **Уфанет**.
+<br>A wrapper for the **Ufanet** intercom system API.
 
 ## Установка / Installation
 ```bash
-pip install ufanet_intercom_api
+pip install ufanet-intercom-api
 ```
 ## Использование / Usage
 ```python
 import asyncio
+
 from ufanet_intercom_api import UfanetIntercomAPI
 
 CONTRACT = 'your_contract'
@@ -38,6 +37,9 @@ async def main():
     if call_history.results:
         links = await ufanet_api.get_call_history_links(uuid=call_history.results[0].uuid)
         print('Call history links:', links)
+    
+    # Закрытие сессии / Closing the session
+    await ufanet_api.close() 
 
 asyncio.run(main())
 

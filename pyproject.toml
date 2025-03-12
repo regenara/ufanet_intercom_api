@@ -1,6 +1,6 @@
 [project]
 name = "ufanet_intercom_api"
-version = "0.0.3"
+version = "0.0.4"
 description = "API wrapper for managing the Ufanet intercom."
 authors = [
     { name = "regenara", email = "jakebv.22@gmail.com" }
@@ -13,6 +13,10 @@ dependencies = [
 ]
 
 dynamic = ["readme"]
+
+[project.urls]
+repository = "https://github.com/regenara/ufanet_intercom_api"
+homepage = "https://github.com/regenara/ufanet_intercom_api"
 
 [build-system]
 requires = ["setuptools", "wheel"]
