@@ -28,12 +28,13 @@ from .models import (History,
 
 
 class UfanetIntercomAPI:
-    def __init__(self, contract: str, password: str, timeout: int = 30):
+    def __init__(self, contract: str, password: str, timeout: int = 30, level: logging = logging.INFO):
         self._contract = contract
         self._password = password
         self._token: Union[str, None] = None
         self._base_url: str = 'https://dom.ufanet.ru/'
         self._logger: logging = logging.getLogger('UfanetIntercomAPI')
+        self._logger.setLevel(level)
 
         ssl_context = ssl.create_default_context(cafile=certifi.where())
         self.session: ClientSession = ClientSession(connector=TCPConnector(ssl=ssl_context),
