@@ -1,6 +1,6 @@
 [project]
 name = "ufanet_intercom_api"
-version = "0.0.6"
+version = "0.0.7"
 description = "API wrapper for managing the Ufanet intercom."
 authors = [
     { name = "regenara", email = "jakebv.22@gmail.com" }

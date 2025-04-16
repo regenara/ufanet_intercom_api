@@ -1,0 +1,46 @@
+cache:
+  paths:
+    - .cache/pip
+
+stages:
+  - build
+  - deploy
+
+
+default:
+  image: python:3.10-slim
+  before_script:
+    - mkdir -p .cache/pip
+    - python3.10 -m venv venv
+    - source venv/bin/activate
+    - pip install wheel twine build
+
+
+build_ufanet_intercom_api:
+  stage: build
+  rules:
+    - changes:
+        - ufanet_intercom_api/**/*
+      if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "master"'
+  script:
+    - python3.10 -m build
+  artifacts:
+    paths:
+      - dist/*
+    expire_in: 1 hour
+
+
+publish_ufanet_intercom_api:
+  stage: deploy
+  environment:
+    name: production
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      changes:
+        - pyproject.toml
+  script:
+    - cat /home/mstoneho/.pypirc > .pypirc
+    - twine upload -r pypi --config-file .pypirc dist/*
+    - git fetch origin master
+    - git push github origin/master:master
+  needs: ["build_ufanet_intercom_api"]
