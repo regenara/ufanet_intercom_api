@@ -122,4 +122,3 @@ class UfanetIntercomAPI:
 
     async def close(self):
         await self.session.close()
-

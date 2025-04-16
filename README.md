@@ -1,8 +1,8 @@
 # Ufanet Intercom API
 
 ### Описание / Description
-Обёртка API для управления домофоном провайдера **Уфанет**.
-<br>A wrapper for the **Ufanet** intercom system API.
+[Обёртка API](https://pypi.org/project/ufanet-intercom-api/) для управления домофоном провайдера **Уфанет**.
+<br>[A wrapper](https://pypi.org/project/ufanet-intercom-api/) for the **Ufanet** intercom system API.
 
 ## Установка / Installation
 ```bash
