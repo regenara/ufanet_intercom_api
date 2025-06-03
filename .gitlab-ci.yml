@@ -39,8 +39,5 @@ publish_ufanet_intercom_api:
       changes:
         - pyproject.toml
   script:
-    - cat /home/mstoneho/.pypirc > .pypirc
-    - twine upload -r pypi --config-file .pypirc dist/*
-    - git fetch origin master
-    - git push github origin/master:master
+    - twine upload -u __token__ -p "$PYPI_TOKEN" dist/*
   needs: ["build_ufanet_intercom_api"]
