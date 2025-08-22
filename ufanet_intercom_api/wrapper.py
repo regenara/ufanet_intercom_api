@@ -21,6 +21,7 @@ from .exceptions import (ClientConnectorUfanetIntercomAPIError,
                          TimeoutUfanetIntercomAPIError,
                          UnauthorizedUfanetIntercomAPIError,
                          UnknownUfanetIntercomAPIError)
+from .logger import SafeLogger
 from .models import (History,
                      HistoryData,
                      Intercom,
@@ -33,7 +34,7 @@ class UfanetIntercomAPI:
         self._password = password
         self._token: Union[str, None] = None
         self._base_url: str = 'https://dom.ufanet.ru/'
-        self._logger: logging = logging.getLogger('UfanetIntercomAPI')
+        self._logger = SafeLogger('UfanetIntercomAPI')
         self._logger.setLevel(level)
 
         ssl_context = ssl.create_default_context(cafile=certifi.where())
