@@ -51,20 +51,24 @@ class UfanetIntercomAPI:
                               request_id, method, url, params, json)
             try:
                 async with self.session.request(method, url, params=params, json=json, headers=headers) as response:
+                    try:
+                        json_response = await response.json() if 199 < response.status < 500 else None
+                    except (JSONDecodeError, ContentTypeError) as e:
+                        raw_response = await response.text()
+                        self._logger.error('Response=%s unsuccessful request status=%s reason=%s raw=%s error=%s',
+                                           request_id, response.status, response.reason, raw_response, e)
+                        raise UnknownUfanetIntercomAPIError(f'Unknown error: {response.status} {response.reason}')
+
                     if response.status == 401:
-                        raise UnauthorizedUfanetIntercomAPIError
-                    json_response = await response.json() if 199 < response.status < 500 else None
+                        raise UnauthorizedUfanetIntercomAPIError(json_response)
+
                     if response.status in (200,):
                         self._logger.info('Response=%s json_response=%s', request_id, json_response)
                         return json_response
+
                     self._logger.error('Response=%s unsuccessful request json_response=%s status=%s reason=%s',
                                        request_id, json_response, response.status, response.reason)
                     raise UnknownUfanetIntercomAPIError(json_response)
-
-            except (JSONDecodeError, ContentTypeError) as e:
-                self._logger.error('Response=%s unsuccessful request status=%s reason=%s error=%s',
-                                   request_id, response.status, response.reason, e)
-                raise UnknownUfanetIntercomAPIError(f'Unknown error: {response.status} {response.reason}')
 
             except asyncio.exceptions.TimeoutError:
                 self._logger.error('Response=%s TimeoutUfanetIntercomAPIError', request_id)
@@ -74,10 +78,10 @@ class UfanetIntercomAPI:
                 self._logger.error('Response=%s ClientConnectorUfanetIntercomAPIError', request_id)
                 raise ClientConnectorUfanetIntercomAPIError('Client connector error')
 
-            except UnauthorizedUfanetIntercomAPIError:
-                self._logger.error('Response=%s UnauthorizedUfanetIntercomAPIError, trying get jwt', request_id)
+            except UnauthorizedUfanetIntercomAPIError as e:
+                self._logger.warning('Response=%s UnauthorizedUfanetIntercomAPIError=%s, trying get jwt',
+                                     request_id, e)
                 await self._prepare_token()
-                continue
 
     async def _prepare_token(self):
         if self._token is None:
