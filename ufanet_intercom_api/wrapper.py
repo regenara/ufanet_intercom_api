@@ -16,6 +16,7 @@ from aiohttp import (ClientSession,
                      TCPConnector)
 from aiohttp.client_exceptions import (ClientConnectorError,
                                        ContentTypeError)
+from pycparser.ply.yacc import resultlimit
 
 from .exceptions import (ClientConnectorUfanetIntercomAPIError,
                          TimeoutUfanetIntercomAPIError,
@@ -25,7 +26,7 @@ from .logger import SafeLogger
 from .models import (History,
                      HistoryData,
                      Intercom,
-                     Token)
+                     Token, Camera)
 
 
 class UfanetIntercomAPI:
@@ -107,6 +108,11 @@ class UfanetIntercomAPI:
         url = urljoin(self._base_url, 'api/v0/skud/shared/')
         response = await self._send_request(url=url)
         return [Intercom(**i) for i in response]
+
+    async def get_cameras(self) -> List[Camera]:
+        url = urljoin(self._base_url, 'api/v1/cctv')
+        response = await self._send_request(url=url)
+        return [Camera(**{**i, "rtsp_url": f"rtsp://{i["servers"]["domain"]}/{i["number"]}?token={i["token_l"]}"}) for i in response]
 
     async def open_intercom(self, intercom_id: int) -> bool:
         url = urljoin(self._base_url, f'api/v0/skud/shared/{intercom_id}/open/')

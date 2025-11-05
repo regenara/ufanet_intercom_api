@@ -41,6 +41,25 @@ class Intercom(BaseModel):
     scope: str
 
 
+class Servers(BaseModel):
+    server: bool
+    domain: str
+    screenshot_domain: str
+    vendor_name: str
+
+
+class Camera(BaseModel):
+    number: str
+    latitude: float
+    longitude: float
+    title: str
+    address: str
+    token_l: str
+    token_r: str
+    servers: Servers
+    rtsp_url: Optional[str]
+    type: str
+
 class HistoryResult(BaseModel):
     uuid: str
     house_id: int
