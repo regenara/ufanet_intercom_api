@@ -16,7 +16,6 @@ from aiohttp import (ClientSession,
                      TCPConnector)
 from aiohttp.client_exceptions import (ClientConnectorError,
                                        ContentTypeError)
-from pycparser.ply.yacc import resultlimit
 
 from .exceptions import (ClientConnectorUfanetIntercomAPIError,
                          TimeoutUfanetIntercomAPIError,
