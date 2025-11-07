@@ -29,7 +29,7 @@ async def main():
         await ufanet_api.open_intercom(intercom_id=i.id)
 
     # Получение списков всех камер с rtsp ссылкой
-    cameras = ufanet_api.get_cameras()
+    cameras = await ufanet_api.get_cameras()
     print('Avalible cameras:', cameras)
         
     # Получение истории вызовов / Retrieving call history
