@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import (List,
                     Optional)
 
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field
 
 
 class Token(BaseModel):
@@ -57,8 +57,11 @@ class Camera(BaseModel):
     token_l: str
     token_r: str
     servers: Servers
-    rtsp_url: Optional[str]
     type: str
+    @computed_field
+    @property
+    def rtsp_url(self) -> str:
+        return f"rtsp://{self.servers.domain}/{self.number}?token={self.token_l}"
 
 class HistoryResult(BaseModel):
     uuid: str

@@ -111,8 +111,8 @@ class UfanetIntercomAPI:
     async def get_cameras(self) -> List[Camera]:
         url = urljoin(self._base_url, 'api/v1/cctv')
         response = await self._send_request(url=url)
-        return [Camera(**{**i, "rtsp_url": f"rtsp://{i["servers"]["domain"]}/{i["number"]}?token={i["token_l"]}"}) for i in response]
-
+        return [Camera(**i) for i in response]        
+    
     async def open_intercom(self, intercom_id: int) -> bool:
         url = urljoin(self._base_url, f'api/v0/skud/shared/{intercom_id}/open/')
         response = await self._send_request(url=url)
