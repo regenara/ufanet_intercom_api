@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import (List,
-                    Optional)
+                    Optional,
+                    Union)
 
 from pydantic import BaseModel
 
@@ -18,7 +19,7 @@ class Role(BaseModel):
 
 class Intercom(BaseModel):
     id: int
-    contract: Optional[str]
+    contract:  Optional[Union[int, str]]
     role: Role
     camera: Optional[str]
     cctv_number: str
