@@ -19,7 +19,7 @@ class Role(BaseModel):
 
 class Intercom(BaseModel):
     id: int
-    contract:  Optional[Union[int, str]]
+    contract: Optional[Union[int, str]]
     role: Role
     camera: Optional[str]
     cctv_number: str
