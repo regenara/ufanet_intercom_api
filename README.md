@@ -37,6 +37,11 @@ async def main():
     if call_history.results:
         links = await ufanet_api.get_call_history_links(uuid=call_history.results[0].uuid)
         print('Call history links:', links)
+        
+    # Получение списков всех камер с rtsp ссылкой
+    cameras = await ufanet_api.get_cameras()
+    for camera in cameras:
+        print('RTSP link', camera.rtsp_url)
     
     # Закрытие сессии / Closing the session
     await ufanet_api.close() 

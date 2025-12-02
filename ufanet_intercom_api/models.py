@@ -1,8 +1,10 @@
 from datetime import datetime
 from typing import (List,
-                    Optional)
+                    Optional,
+                    Union)
 
-from pydantic import BaseModel
+from pydantic import (BaseModel,
+                      computed_field)
 
 
 class Token(BaseModel):
@@ -18,7 +20,7 @@ class Role(BaseModel):
 
 class Intercom(BaseModel):
     id: int
-    contract: Optional[str]
+    contract: Optional[Union[int, str]]
     role: Role
     camera: Optional[str]
     cctv_number: str
@@ -39,6 +41,29 @@ class Intercom(BaseModel):
     supports_key_recording: bool
     ble_support: bool
     scope: str
+
+
+class Servers(BaseModel):
+    server: bool
+    domain: str
+    screenshot_domain: str
+    vendor_name: str
+
+
+class Camera(BaseModel):
+    number: str
+    latitude: float
+    longitude: float
+    title: str
+    address: str
+    token_l: str
+    token_r: str
+    servers: Servers
+    type: str
+    @computed_field
+    @property
+    def rtsp_url(self) -> str:
+        return f"rtsp://{self.servers.domain}/{self.number}?token={self.token_l}"
 
 
 class HistoryResult(BaseModel):

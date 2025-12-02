@@ -22,7 +22,8 @@ from .exceptions import (ClientConnectorUfanetIntercomAPIError,
                          UnauthorizedUfanetIntercomAPIError,
                          UnknownUfanetIntercomAPIError)
 from .logger import SafeLogger
-from .models import (History,
+from .models import (Camera,
+                     History,
                      HistoryData,
                      Intercom,
                      Token)
@@ -102,6 +103,11 @@ class UfanetIntercomAPI:
         url = urljoin(self._base_url, 'api-token-verify/')
         json = {'token': self._token}
         await self._send_request(url=url, method='POST', json=json)
+
+    async def get_cameras(self) -> List[Camera]:
+        url = urljoin(self._base_url, 'api/v1/cctv')
+        response = await self._send_request(url=url)
+        return [Camera(**i) for i in response]
 
     async def get_intercoms(self) -> List[Intercom]:
         url = urljoin(self._base_url, 'api/v0/skud/shared/')
